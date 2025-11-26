@@ -1,22 +1,25 @@
-import logo from './assets/logo.png';
+import Nav from './Navbar';
 import './App.css'
+import { Routes, Route } from 'react-router-dom'
+import Inscription from './inscription'
+
+function Home() {
+  return (
+    <section id="accueil" className='accueil-section'>
+      <h2>Bienvenue à SmartPark</h2>
+      <p>Votre solution intelligente pour le stationnement.</p>
+    </section>
+  )
+}
 
 function App() {
   return (
     <>
-      <div className='navbar'>
-        <img src={logo} alt="Logo" className='logo' />
-        <h1 className='title'>SmartPark</h1>
-
-        <a href="#accueil" className='nav-link'>Accueil</a>
-        <a href="#inscription" className='nav-link'>S'inscrire</a>
-        <a href="#connexion" className='nav-link'>Se connecter</a>
-
-      </div>
-
-
-
-
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/inscription" element={<Inscription />} />
+      </Routes>
     </>
   )
 }

@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: Raleway, sans-serif;
+}
+
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;        /* meilleure gestion hauteur */
+    font-family: sans-serif;
+    gap: 8rem;            /* réduit l’écart */
+}
+
+/* Côté image */
+.image-side {
+    width: 28%;
+    height: 60%;          /* réduit la hauteur */
+    background: #ddd;
+}
+
+.image-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.form-side {
+    width: 40%;
+    padding: 40px;        /* réduit */
+    display: flex;
+    flex-direction: column;
+}
+
+.form-side h2 {
+    margin-bottom: 25px;  /* réduit */
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.inscription-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;            /* réduit un peu */
+}
+
+/* Layout des lignes */
+.row {
+    display: flex;
+    gap: 25px;            /* réduit */
+}
+
+.field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.field label {
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.field input {
+    padding: 10px;        /* réduit */
+    background: #ffffff;
+    border: 1px solid #000;
+    border-radius: 14px;  /* plus discret */
+}
+
+/* Bouton */
+.inscription-form button {
+    padding: 12px;        /* réduit */
+    margin-top: 15px;
+    background: #00650d;
+    border: none;
+    border-radius: 14px;
+    font-size: 0.9rem;    /* réduit */
+    cursor: pointer;
+}
+
+/* Texte login */
+.login-text {
+    margin-top: 6px;
+    font-size: 13px;
+}
+
+/* Texte légal */
+.legal {
+    margin-top: 10px;
+    font-size: 11px;
+}
