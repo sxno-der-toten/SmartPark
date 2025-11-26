@@ -1,9 +1,9 @@
-# Smart Park
+# 🚗 Smart Park
 
 Une application qui affiche en temps réel les places disponibles dans les parkings d’Orléans
 Idéale pour aider les conducteurs à trouver une place rapidement
 
-## Fonctionnalités
+## ✨ Fonctionnalités
 
 Affichage en temps réel du nombre de places libres
 
@@ -13,7 +13,7 @@ Interface rapide et légère
 
 Signalements utilisateurs
 
-## À venir
+## 📅 À venir
 
 Notifications quand un parking se libère
 
@@ -21,7 +21,7 @@ Filtre par distance
 
 Historique des disponibilités
 
-## Technos
+## 🛠️ Technos
 
 Frontend React + Vite
 
