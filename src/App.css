@@ -1,0 +1,46 @@
+/* Keep the app centered, but the navbar will escape the centered container */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.logo {
+  height: 70px;
+}
+
+/* Make the navbar full viewport width and pin it to the top */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 14px;
+  padding: 4px 24px;
+  background-color: #000000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  box-sizing: border-box;
+  gap: 50px;
+}
+
+/* Title styling inside the navbar */
+.title {
+  color: #9f8d48;
+  font-size: 22px;
+  margin: 0;
+}
+
+.nav-link {
+  color: #9f8d48;
+  font-size: 18px;
+  text-decoration: none;
+  margin-left: 12px;
+}
+
+/* Prevent the fixed navbar from overlapping page content */
+body {
+  padding-top: 96px;
+}
