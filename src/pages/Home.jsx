@@ -17,25 +17,26 @@ export default function Home() {
       maxZoom: 19,
     }).addTo(m);
 
-    fetch("/backend/parkings.php")
+    fetch("http://127.0.0.1:80/backend/parkings.php")
       .then((r) => r.json())
       .then((data) => {
         setParkings(data);
 
         data.forEach((p) => {
+          console.log(p)
           if (!p.lat || !p.lon) return;
 
           let iconUrl;
           if (p.nb_places_libres == null) {
-            iconUrl = "https://maps.google.com/mapfiles/ms/icons/grey-dot.png";
-          } else if (p.nb_places_libres === 0) {
-            iconUrl = "https://maps.google.com/mapfiles/ms/icons/red-dot.png";
+            iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png";
+          } else if (p.nb_places_libres == 0) {
+            iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png";
           } else {
             const taux = (p.nb_places_libres / p.nb_places) * 100;
             iconUrl =
               taux > 20
-                ? "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
-                : "https://maps.google.com/mapfiles/ms/icons/orange-dot.png";
+                ? "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"
+                : "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png";
           }
 
           const icon = L.icon({

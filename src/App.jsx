@@ -1,27 +1,46 @@
-import Nav from './Navbar';
-import './App.css'
-import { Routes, Route } from 'react-router-dom'
-import Inscription from './inscription'
+// src/App.jsx
+import ErrorBoundary from "./components/ErrorBoundary";
+import Parkings from "./pages/Parkings";
 
-function Home() {
-  return (
-    <section id="accueil" className='accueil-section'>
-      <h2>Bienvenue à SmartPark</h2>
-      <p>Votre solution intelligente pour le stationnement.</p>
-    </section>
-  )
-}
+<Routes>
+  <Route path="/parkings" element={<Parkings />} />
+</Routes>
+
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+
+// import HomeMinilist from "./pages/HomeMinilist";
+
+import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
+import Maintenance from "./pages/Maintenance";
+import Reports from "./pages/Reports";
+import { AuthProvider } from "./context/AuthContext";
+import { ParkingProvider } from "./context/ParkingContext";
+import "./styles/global.css";
+import "./styles/theme.css";
 
 function App() {
   return (
-    <>
-      <Nav />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/inscription" element={<Inscription />} />
-      </Routes>
-    </>
-  )
+    <AuthProvider>
+      <ParkingProvider>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/maintenance" element={<Maintenance />} />
+            <Route path="/reports" element={<Reports />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </ParkingProvider>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

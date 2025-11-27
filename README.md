@@ -1,32 +1,18 @@
-# 🚗 Smart Park
+# React + Vite
 
-Une application qui affiche en temps réel les places disponibles dans les parkings d’Orléans
-Idéale pour aider les conducteurs à trouver une place rapidement
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## ✨ Fonctionnalités
+Currently, two official plugins are available:
 
-Affichage en temps réel du nombre de places libres
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-Carte interactive des parkings d’Orléans
+## React Compiler
 
-Interface rapide et légère
+The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
 
-Signalements utilisateurs
+Note: This will impact Vite dev & build performances.
 
-## 📅 À venir
+## Expanding the ESLint configuration
 
-Notifications quand un parking se libère
-
-Filtre par distance
-
-Historique des disponibilités
-
-## 🛠️ Technos
-
-Frontend React + Vite
-
-Backend PHP
-
-API temps réel via WebSocket ou SSE
-
-Source des données issues de l’open data d’Orléans
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
