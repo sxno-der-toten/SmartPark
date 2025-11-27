@@ -5,14 +5,20 @@ import { useAuth } from "../context/AuthContext";
 export default function Auth() {
   const [mode, setMode] = useState("login"); // "login" | "signup"
   const { login, signup } = useAuth();
-  const [form, setForm] = useState({ email: "", password: "", name: "" });
+  const [form, setForm] = useState({ nom: "", prenom: "", email: "", password: "" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (mode === "login") {
-      login(form.email);
-    } else {
-      signup({ email: form.email, name: form.name });
+    try {
+      if (mode === "login") {
+        await login({ email: form.email, password: form.password });
+      } else {
+        await signup({ nom: form.nom, prenom: form.prenom, email: form.email, password: form.password });
+      }
+    } catch (err) {
+      console.error("Auth error:", err);
+      // show a simple alert for now; the UI can be improved later
+      alert(err.message || "Erreur d'authentification");
     }
   };
 
@@ -36,17 +42,30 @@ export default function Auth() {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {mode === "signup" && (
-            <div className="field">
-              <label>Nom</label>
-              <input
-                type="text"
-                placeholder="Votre nom"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required
-              />
-            </div>
-          )}
+              <>
+                <div className="field">
+                  <label>Nom</label>
+                  <input
+                    type="text"
+                    placeholder="Votre nom"
+                    value={form.nom}
+                    onChange={(e) => setForm({ ...form, nom: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="field">
+                  <label>Prénom</label>
+                  <input
+                    type="text"
+                    placeholder="Votre prénom"
+                    value={form.prenom}
+                    onChange={(e) => setForm({ ...form, prenom: e.target.value })}
+                    required
+                  />
+                </div>
+              </>
+            )}
           <div className="field">
             <label>Email</label>
             <input

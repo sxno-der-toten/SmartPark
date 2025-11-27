@@ -13,10 +13,20 @@ export function AuthProvider({ children }) {
       body: JSON.stringify(formData),
     });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message);
+    const text = await res.text();
+    let data;
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch (e) {
+      throw new Error(
+        `Backend returned non-JSON response (status ${res.status}): ${text.substring(0, 500)}`
+      );
+    }
+
+    if (!res.ok) throw new Error(data.message || `Erreur ${res.status}`);
 
     setUser(data.user);
+    return data.user;
   };
 
   const login = async (credentials) => {
@@ -26,10 +36,20 @@ export function AuthProvider({ children }) {
       body: JSON.stringify(credentials),
     });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message);
+    const text = await res.text();
+    let data;
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch (e) {
+      throw new Error(
+        `Backend returned non-JSON response (status ${res.status}): ${text.substring(0, 500)}`
+      );
+    }
+
+    if (!res.ok) throw new Error(data.message || `Erreur ${res.status}`);
 
     setUser(data.user);
+    return data.user;
   };
 
   const logout = () => setUser(null);

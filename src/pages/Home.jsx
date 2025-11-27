@@ -55,7 +55,7 @@ export default function Home() {
             `);
         });
       })
-      .catch((err) => console.error("Erreur:", err));
+      // .catch((err) => console.error("Erreur:", err));
 
     return () => {
       m.remove();
