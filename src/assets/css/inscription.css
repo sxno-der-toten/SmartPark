@@ -8,15 +8,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;        /* meilleure gestion hauteur */
+    height: 90vh;
     font-family: sans-serif;
-    gap: 8rem;            /* réduit l’écart */
+    gap: 8rem;
 }
 
 /* Côté image */
 .image-side {
     width: 28%;
-    height: 60%;          /* réduit la hauteur */
+    height: 60%;
     background: #ddd;
 }
 
@@ -28,13 +28,13 @@
 
 .form-side {
     width: 40%;
-    padding: 40px;        /* réduit */
+    padding: 40px;
     display: flex;
     flex-direction: column;
 }
 
 .form-side h2 {
-    margin-bottom: 25px;  /* réduit */
+    margin-bottom: 25px;
     font-size: 1.4rem;
     font-weight: 600;
 }
@@ -42,7 +42,7 @@
 .inscription-form {
     display: flex;
     flex-direction: column;
-    gap: 12px;            /* réduit un peu */
+    gap: 12px;
 }
 
 /* Layout des lignes */
