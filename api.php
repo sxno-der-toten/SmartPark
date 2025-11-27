@@ -12,7 +12,7 @@ if ($response === false) {
     exit;
 }
 
-$data = json_decode($response);
+$data = json_decode($response); 
 
 // Préparer un tableau simplifié avec nom, lat, lon
 $parkings = array_map(function($item) {
