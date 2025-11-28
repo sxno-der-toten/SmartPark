@@ -4,6 +4,8 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
+
+
 const orleansCenter = [47.9025, 1.9090];
 
 export default function Reports() {
@@ -13,11 +15,9 @@ export default function Reports() {
   const [problem, setProblem] = useState("");
 
   useEffect(() => {
-    fetch("/backend/parkings.php")
+    fetch("http://localhost/backend/parkings.php")
       .then((r) => r.json())
-      .then((data) => {
-        setParkings(data);
-      })
+      .then((data) => setParkings(data))
       .catch((err) => console.error("Erreur:", err));
   }, []);
 
@@ -26,7 +26,7 @@ export default function Reports() {
     iconSize: [32, 32],
   });
 
-  const handleAddReport = () => {
+  const handleAddReport = async () => {
     if (!selectedParking || !problem.trim()) {
       alert("Veuillez choisir un parking et préciser le problème.");
       return;
@@ -35,29 +35,69 @@ export default function Reports() {
     const parking = parkings.find((p) => p.nom === selectedParking);
     if (!parking) return;
 
-    const newReport = {
-      id: Date.now(),
-      lieu: parking.nom,
-      parkingId: parking.id || parking.nom,
-      type: "parking",
+    const payload = {
+      title: `Problème au parking ${parking.nom}`,
       description: problem,
-      coords: [parking.lat, parking.lon],
+      latitude: parking.lat,
+      longitude: parking.lon,
     };
 
-    setReports([...reports, newReport]);
+    try {
+      const res = await fetch("http://localhost/backend/parking_app/reports_api.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Signalement enregistré !");
+        await loadReports(); // recharge depuis le backend
+      } else {
+        alert("Erreur: " + data.message);
+      }
+    } catch (err) {
+      console.error("Erreur:", err);
+    }
+
     setSelectedParking("");
     setProblem("");
   };
 
-  
+  const loadReports = async () => {
+    try {
+      const res = await fetch("http://localhost/backend/parking_app/reports_api.php", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (data.success) {
+        // Adapter les données pour la carte
+        const formatted = data.reports.map((r) => ({
+          id: r.id,
+          lieu: r.title,
+          description: r.description,
+          coords: [r.latitude, r.longitude],
+        }));
+        setReports(formatted);
+      }
+    } catch (err) {
+      console.error("Erreur chargement reports:", err);
+    }
+  };
+
+  useEffect(() => {
+    loadReports();
+  }, []);
 
   const handleDelete = (id) => {
     setReports(reports.filter((r) => r.id !== id));
+    // ⚠️ Ici tu supprimes seulement côté frontend.
+    // Si tu veux supprimer en base, il faut ajouter un DELETE dans reports_api.php.
   };
 
   return (
     <main className="container">
-      <h1></h1>
+      <h1>Reports</h1>
 
       {/* Formulaire signaler un problème */}
       <section className="card">
@@ -106,8 +146,7 @@ export default function Reports() {
                 }}
               >
                 <span>
-                  <strong>{r.lieu}</strong> — Parking {r.parkingId} —{" "}
-                  {r.description}
+                  <strong>{r.lieu}</strong> — {r.description}
                 </span>
                 <button
                   className="btn-danger"
@@ -138,10 +177,12 @@ export default function Reports() {
             <Marker key={r.id} position={r.coords} icon={iconParking}>
               <Popup>
                 <strong>{r.lieu}</strong> <br />
-                Parking {r.parkingId} <br />
                 {r.description}
                 <br />
-                <button className="btn-danger" onClick={() => handleDelete(r.id)}>
+                <button
+                  className="btn-danger"
+                  onClick={() => handleDelete(r.id)}
+                >
                   Supprimer
                 </button>
               </Popup>

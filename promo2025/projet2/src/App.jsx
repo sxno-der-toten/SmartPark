@@ -26,6 +26,12 @@ import { ParkingProvider } from "./context/ParkingContext";
 import "./styles/global.css";
 import "./styles/theme.css";
 
+
+
+import Success from "./pages/Success";
+
+
+
 function App() {
   return (
     <AuthProvider>
@@ -37,7 +43,8 @@ function App() {
             <Route path="/auth" element={<Auth />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/maintenance" element={<Maintenance />} />
-            <Route path="/reports" element={<Reports />} />
+            <Route path="/reports" element={<ErrorBoundary><Reports /></ErrorBoundary>} />
+            <Route path="/success" element={<Success />} />
           </Routes>
           <Footer />
         </BrowserRouter>
