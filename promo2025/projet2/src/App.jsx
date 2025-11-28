@@ -1,4 +1,7 @@
 // src/App.jsx
+import "./styles/responsive.css";
+
+
 import ErrorBoundary from "./components/ErrorBoundary";
 import Parkings from "./pages/Parkings";
 

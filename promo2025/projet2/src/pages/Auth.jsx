@@ -1,20 +1,55 @@
 // src/pages/Auth.jsx
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Auth() {
-  const [mode, setMode] = useState("login"); // "login" | "signup"
-  const { login, signup } = useAuth();
-  const [form, setForm] = useState({ email: "", password: "", name: "" });
+  const [mode, setMode] = useState("login");
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    name: "",
+    street: "",
+    city: "",
+    postalCode: "",
+  });
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (mode === "login") {
-      login(form.email);
-    } else {
-      signup({ email: form.email, name: form.name });
+
+    const payload = { ...form, mode };
+
+    try {
+      console.log("Payload envoyé:", payload);
+
+      const res = await fetch("http://localhost/backend/parking_app/login.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        credentials: "include", // 🔹 inclure les cookies si tu utilises les sessions PHP
+      });
+
+      const data = await res.json();
+      console.log("Réponse backend:", data);
+
+      if (data.success) {
+        // 🔹 Stocker l'ID utilisateur dans localStorage
+        localStorage.setItem("user_id", data.user_id);
+
+        alert(data.message);
+        // 🔹 Redirection vers la page profil
+        navigate("/Profile");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête :", error);
+      alert("Impossible de contacter le serveur.");
     }
   };
+
+  
 
   return (
     <main className="auth-container">
@@ -36,17 +71,52 @@ export default function Auth() {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {mode === "signup" && (
-            <div className="field">
-              <label>Nom</label>
-              <input
-                type="text"
-                placeholder="Votre nom"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required
-              />
-            </div>
+            <>
+              <div className="field">
+                <label>Nom</label>
+                <input
+                  type="text"
+                  placeholder="Votre nom"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="field">
+                <label>Adresse</label>
+                <input
+                  type="text"
+                  placeholder="Numéro et rue"
+                  value={form.street}
+                  onChange={(e) => setForm({ ...form, street: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="field">
+                <label>Ville</label>
+                <input
+                  type="text"
+                  placeholder="Orléans"
+                  value={form.city}
+                  onChange={(e) => setForm({ ...form, city: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="field">
+                <label>Code postal</label>
+                <input
+                  type="text"
+                  placeholder="45000"
+                  value={form.postalCode}
+                  onChange={(e) =>
+                    setForm({ ...form, postalCode: e.target.value })
+                  }
+                  required
+                />
+              </div>
+            </>
           )}
+
           <div className="field">
             <label>Email</label>
             <input
@@ -57,6 +127,7 @@ export default function Auth() {
               required
             />
           </div>
+
           <div className="field">
             <label>Mot de passe</label>
             <input
@@ -72,12 +143,6 @@ export default function Auth() {
             {mode === "login" ? "Se connecter" : "Créer un compte"}
           </button>
         </form>
-
-        <div className="transition-tip">
-          {mode === "login"
-            ? "Pas de compte ? Inscrivez-vous pour garder vos réservations."
-            : "Déjà inscrit ? Connectez-vous pour retrouver vos places."}
-        </div>
       </div>
     </main>
   );

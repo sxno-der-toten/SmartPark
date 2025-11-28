@@ -1,32 +1,68 @@
 // src/pages/Profile.jsx
-import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useState, useEffect } from "react";
 
 export default function Profile() {
-  const { user, signup } = useAuth(); // on utilise signup pour mettre à jour les infos
+  const [user, setUser] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", id: "" });
 
-  const handleValidate = () => {
-    signup(formData); // met à jour les infos dans le contexte
-    setEditMode(false);
-    alert("Vos informations ont été mises à jour !");
+  // 🔹 Récupérer l'ID utilisateur depuis localStorage
+  const userId = localStorage.getItem("user_id");
+
+  // 🔹 Charger les infos utilisateur depuis get_profile.php
+  useEffect(() => {
+    if (!userId) return;
+
+    fetch(`http://localhost/backend/parking_app/get_profile.php?user_id=${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setUser(data.user);
+          setFormData({
+            name: data.user.name,
+            email: data.user.email,
+            id: data.user.id
+          });
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(err => console.error("Erreur chargement profil:", err));
+  }, [userId]);
+
+  // 🔹 Mettre à jour le profil via update_profile.php
+  const handleValidate = async () => {
+    try {
+      const res = await fetch("http://localhost/backend/parking_app/update_profile.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Profil mis à jour !");
+        setUser({ ...user, ...formData });
+        setEditMode(false);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Erreur mise à jour profil:", error);
+      alert("Impossible de mettre à jour le profil.");
+    }
   };
 
   return (
     <main className="container">
       <div className="card">
         <h2>Profil</h2>
-        {user ? (
+        {formData.id ? (
           <>
             {!editMode ? (
               <>
-                <p><strong>Nom:</strong> {user.name}</p>
-                <p><strong>Email:</strong> {user.email}</p>
-                <p><strong>ID:</strong> {user.id}</p>
+                <p><strong>Nom:</strong> {formData.name}</p>
+                <p><strong>Email:</strong> {formData.email}</p>
+                <p><strong>ID:</strong> {formData.id}</p>
                 <button
                   className="btn-primary"
                   style={{ marginTop: "10px" }}
