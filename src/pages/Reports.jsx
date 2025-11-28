@@ -4,6 +4,8 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
+
+
 const orleansCenter = [47.9025, 1.9090];
 
 export default function Reports() {
@@ -13,11 +15,9 @@ export default function Reports() {
   const [problem, setProblem] = useState("");
 
   useEffect(() => {
-    fetch("/backend/parkings.php")
+    fetch("http://localhost/backend/parkings.php")
       .then((r) => r.json())
-      .then((data) => {
-        setParkings(data);
-      })
+      .then((data) => setParkings(data))
       .catch((err) => console.error("Erreur:", err));
   }, []);
 
@@ -26,7 +26,7 @@ export default function Reports() {
     iconSize: [32, 32],
   });
 
-  const handleAddReport = () => {
+  const handleAddReport = async () => {
     if (!selectedParking || !problem.trim()) {
       alert("Veuillez choisir un parking et préciser le problème.");
       return;
@@ -35,22 +35,64 @@ export default function Reports() {
     const parking = parkings.find((p) => p.nom === selectedParking);
     if (!parking) return;
 
-    const newReport = {
-      id: Date.now(),
-      lieu: parking.nom,
-      parkingId: parking.id || parking.nom,
-      type: "parking",
+    const payload = {
+      title: `Problème au parking ${parking.nom}`,
       description: problem,
-      coords: [parking.lat, parking.lon],
+      latitude: parking.lat,
+      longitude: parking.lon,
     };
 
-    setReports([...reports, newReport]);
+    try {
+      const res = await fetch("http://localhost/backend/parking_app/reports_api.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Signalement enregistré !");
+        await loadReports(); // recharge depuis le backend
+      } else {
+        alert("Erreur: " + data.message);
+      }
+    } catch (err) {
+      console.error("Erreur:", err);
+    }
+
     setSelectedParking("");
     setProblem("");
   };
 
+  const loadReports = async () => {
+    try {
+      const res = await fetch("http://localhost/backend/parking_app/reports_api.php", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (data.success) {
+        // Adapter les données pour la carte
+        const formatted = data.reports.map((r) => ({
+          id: r.id,
+          lieu: r.title,
+          description: r.description,
+          coords: [r.latitude, r.longitude],
+        }));
+        setReports(formatted);
+      }
+    } catch (err) {
+      console.error("Erreur chargement reports:", err);
+    }
+  };
+
+  useEffect(() => {
+    loadReports();
+  }, []);
+
   const handleDelete = (id) => {
     setReports(reports.filter((r) => r.id !== id));
+    // ⚠️ Ici tu supprimes seulement côté frontend.
+    // Si tu veux supprimer en base, il faut ajouter un DELETE dans reports_api.php.
   };
 
   return (
@@ -60,22 +102,10 @@ export default function Reports() {
       {/* Formulaire signaler un problème */}
       <section className="card">
         <h2>Signaler un problème</h2>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "15px", // espace entre liste, input et bouton
-          }}
-        >
+        <div className="flex-row">
           <select
             value={selectedParking}
             onChange={(e) => setSelectedParking(e.target.value)}
-            style={{
-              padding: "8px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              flex: "1",
-            }}
           >
             <option value="">-- Choisir un parking --</option>
             {parkings.map((p, i) => (
@@ -90,34 +120,16 @@ export default function Reports() {
             placeholder="Préciser le problème (ex: Parking indisponible)"
             value={problem}
             onChange={(e) => setProblem(e.target.value)}
-            style={{
-              padding: "8px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              flex: "2",
-            }}
           />
 
-          <button
-            className="btn-primary"
-            onClick={handleAddReport}
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#007bff",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              flexShrink: 0, // bouton reste compact
-            }}
-          >
+          <button className="btn-primary" onClick={handleAddReport}>
             🚨 Signaler le problème
           </button>
         </div>
       </section>
 
       {/* Partie mes signalements */}
-      <section className="card" style={{ marginTop: "20px" }}>
+      <section className="card">
         <h2>Mes signalements</h2>
         {reports.length === 0 ? (
           <p>Aucun signalement pour l'instant.</p>
@@ -134,21 +146,10 @@ export default function Reports() {
                 }}
               >
                 <span>
-                  <strong>{r.lieu}</strong> — Parking {r.parkingId} —{" "}
-                  {r.description}
+                  <strong>{r.lieu}</strong> — {r.description}
                 </span>
                 <button
                   className="btn-danger"
-                  style={{
-                    backgroundColor: "#ff4d4d", // rouge plus clair
-                    color: "white",
-                    border: "none",
-                    padding: "5px 10px",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    marginLeft: "10px",
-                    fontSize: "0.9em", // bouton plus petit
-                  }}
                   onClick={() => handleDelete(r.id)}
                 >
                   Supprimer
@@ -160,7 +161,7 @@ export default function Reports() {
       </section>
 
       {/* Carte OpenStreetMap avec les signalements */}
-      <section style={{ marginTop: "20px" }}>
+      <section>
         <h2>Carte des signalements</h2>
         <MapContainer
           center={orleansCenter}
@@ -176,21 +177,10 @@ export default function Reports() {
             <Marker key={r.id} position={r.coords} icon={iconParking}>
               <Popup>
                 <strong>{r.lieu}</strong> <br />
-                Parking {r.parkingId} <br />
                 {r.description}
                 <br />
                 <button
                   className="btn-danger"
-                  style={{
-                    marginTop: "5px",
-                    backgroundColor: "#ff4d4d",
-                    color: "white",
-                    border: "none",
-                    padding: "5px 10px",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    fontSize: "0.9em",
-                  }}
                   onClick={() => handleDelete(r.id)}
                 >
                   Supprimer

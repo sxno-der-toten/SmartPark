@@ -1,0 +1,138 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #007bff;
+  margin-top: 0%;
+  padding: 10px 20px;
+  color: white;
+  position: relative;
+  z-index: 1000;
+}
+
+.navbar-logo {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navbar-toggle {
+  display: none;
+  font-size: 1.5em;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.deconnexion-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* === Responsive tablette/mobile === */
+@media (max-width: 990px) {
+  .navbar-toggle {
+    display: block;
+  }
+
+  .navbar-links {
+    display: none;
+    align-items: flex-end;
+    flex-direction: column;
+    background: #232c47;
+    border-radius: 5px;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 40%;
+    padding: 10px 0;
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .navbar-links li {
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  /* Empiler le nom et le bouton de déconnexion sur petits écrans */
+  .navbar-links .auth {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+  }
+
+  .navbar-links .auth .welcome {
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .navbar-links .auth button,
+  .navbar-links .auth .btn-primary {
+    max-width: 360px;
+    padding: 8px 12px;
+  }
+}
+.btn-primary {
+  background: white;        /* fond blanc */
+  color: #232c47;           /* texte bleu visible */
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;         /* texte plus lisible */
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .navbar-logo {
+    margin-bottom: 20px;
+  }
+
+  /* Ajuste la largeur du dropdown pour petits écrans */
+  .navbar-links {
+    display: none; /* caché par défaut, visible quand .active */
+    flex-direction: column;
+    background: #232c47;
+    border-radius: 5px;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    /* élargi pour petits écrans */
+    width: calc(100% - 30%);
+    max-width: 520px;
+    padding: 10px 0;
+    z-index: 40;
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .navbar-links li {
+    text-align: center;
+    padding: 10px 0;
+  }
+}

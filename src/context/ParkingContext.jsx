@@ -4,12 +4,25 @@ import { createContext, useContext, useState, useMemo } from "react";
 const ParkingContext = createContext(null);
 
 // Statuts: "libre", "occupée", "indisponible"
+
+// src/context/ParkingContext.jsx
 const initialSpots = [
-  { id: "A1", status: "libre", level: 1, sensorOk: true },
-  { id: "A2", status: "occupée", level: 1, sensorOk: true },
-  { id: "B1", status: "indisponible", level: 2, sensorOk: false },
-  { id: "B2", status: "libre", level: 2, sensorOk: true },
+  { id: "A1", nomParking: "République", status: "libre", level: 1, sensorOk: true },
+  { id: "A2", nomParking: "Gare", status: "occupée", level: 1, sensorOk: true },
+  { id: "B1", nomParking: "Saint-Paul", status: "indisponible", level: 2, sensorOk: false, dateReparation: "2025-11-28", technicienId: "T123" },
+  { id: "B2", nomParking: "Les Halles", status: "libre", level: 2, sensorOk: true },
 ];
+
+
+
+// const initialSpots = [
+//   { id: "A1", status: "libre", level: 1, sensorOk: true },
+//   { id: "A2", status: "occupée", level: 1, sensorOk: true },
+//   { id: "B1", status: "indisponible", level: 2, sensorOk: false },
+//   { id: "B2", status: "libre", level: 2, sensorOk: true },
+// ];
+
+
 
 export function ParkingProvider({ children }) {
   const [spots, setSpots] = useState(initialSpots);

@@ -110,7 +110,7 @@ export default function Home() {
   return (
     <main className="container">
       <h2>Parkings en direct</h2>
-      <div id="map" style={{ height: "500px", width: "100%" }}></div>
+      <div id="map" style={{ height: "500px", width: "100%", position: "relative", zIndex: 1 }}></div>
 
       {/* Zone de recherche */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>

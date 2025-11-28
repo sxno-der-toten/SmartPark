@@ -26,6 +26,8 @@ export default function Auth() {
     }
   };
 
+  
+
   return (
     <main className="auth-container">
       <div className={`auth-card ${mode}`}>
@@ -80,6 +82,7 @@ export default function Auth() {
               required
             />
           </div>
+
           <div className="field">
             <label>Mot de passe</label>
             <input
@@ -95,12 +98,6 @@ export default function Auth() {
             {mode === "login" ? "Se connecter" : "Créer un compte"}
           </button>
         </form>
-
-        <div className="transition-tip">
-          {mode === "login"
-            ? "Pas de compte ? Inscrivez-vous pour garder vos réservations."
-            : "Déjà inscrit ? Connectez-vous pour retrouver vos places."}
-        </div>
       </div>
     </main>
   );
