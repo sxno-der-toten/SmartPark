@@ -1,7 +1,7 @@
 // src/components/NavbarGuest.jsx
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import "./Navbar.css";
+import "..assets/styles/Navbar.css";
 
 export default function NavbarGuest() {
   const loc = useLocation();

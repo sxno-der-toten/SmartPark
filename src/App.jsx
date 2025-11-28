@@ -1,5 +1,5 @@
 // src/App.jsx
-import "./styles/responsive.css";
+import "./assets/styles/responsive.css";
 
 
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -23,8 +23,8 @@ import Maintenance from "./pages/Maintenance";
 import Reports from "./pages/Reports";
 import { AuthProvider } from "./context/AuthContext";
 import { ParkingProvider } from "./context/ParkingContext";
-import "./styles/global.css";
-import "./styles/theme.css";
+import "./assets/styles/global.css";
+import "./assets/styles/theme.css";
 
 
 
