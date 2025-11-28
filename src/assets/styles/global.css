@@ -58,6 +58,12 @@ body {
   display: flex; justify-content: center; background: rgba(17,24,39,0.4); margin-top: 24px;
 }
 
+.choixparking {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  color: var(--text);
+}
+
 .hero {
   display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: center;
 }
@@ -92,7 +98,7 @@ body {
   display: grid; place-items: center; padding: 24px;
 }
 .auth-card {
-  width: 100%; max-width: 420px; background: var(--card); border: 1px solid #374151;
+  width: 100%; background: var(--card); border: 1px solid #374151;
   border-radius: 16px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
   transition: transform 320ms ease, box-shadow 320ms ease;
 }
@@ -128,6 +134,22 @@ body {
   display: flex;
   justify-content: space-around;
   margin-top: 20px;
+}
+
+.signaler {
+  background: #ef4444; /* rouge */
+  color: #fff;
+  width: 35vh;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.signaler:hover {
+  background: #dc2626; /* rouge foncé */
 }
 
 .stat-card {

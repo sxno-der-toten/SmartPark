@@ -4,10 +4,10 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 // Pin images (resolvable by Vite)
-import pinNoir from "../assets/Pins/Pin_noir.png";
-import pinRouge from "../assets/Pins/Pin_rouge.png";
-import pinVert from "../assets/Pins/Pin_vert.png";
-import pinJaune from "../assets/Pins/Pin_jaune.png";
+import pinNoir from "../assets/pins/Pin_noir.png";
+import pinRouge from "../assets/pins/Pin_rouge.png";
+import pinVert from "../assets/pins/Pin_vert.png";
+import pinJaune from "../assets/pins/Pin_jaune.png";
 
 export default function Home() {
   const [parkings, setParkings] = useState([]);

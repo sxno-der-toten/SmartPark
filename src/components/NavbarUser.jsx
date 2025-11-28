@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import deconnexion from "../assets/deconnexion.png";
 import "../assets/styles/Navbar.css";
 
 export default function Navbar() {
@@ -45,15 +46,9 @@ export default function Navbar() {
 
         {user ? (
           <div className="auth">
-            <span className="welcome">Bonjour, {user.name}</span>
-            <button
-              onClick={() => {
-                logout();
-                closeMenu();
-              }}
-              className="btn-outlined"
-            >
-              Déconnexion
+            <span className="welcome">{user.name}</span>
+            <button onClick={logout} className="btn-outlined">
+              <img  className="deconnexion-icon" src={deconnexion} alt="Déconnexion" />
             </button>
           </div>
         ) : (

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import "../assets/styles/global.css";
 import L from "leaflet";
 
 
@@ -107,7 +108,7 @@ export default function Reports() {
             value={selectedParking}
             onChange={(e) => setSelectedParking(e.target.value)}
           >
-            <option value="">-- Choisir un parking --</option>
+            <option value="" className="choixparking">-- Choisir un parking --</option>
             {parkings.map((p, i) => (
               <option key={i} value={p.nom}>
                 {p.nom}
@@ -122,7 +123,7 @@ export default function Reports() {
             onChange={(e) => setProblem(e.target.value)}
           />
 
-          <button className="btn-primary" onClick={handleAddReport}>
+          <button className="signaler" onClick={handleAddReport}>
             🚨 Signaler le problème
           </button>
         </div>

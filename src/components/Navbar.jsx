@@ -56,7 +56,7 @@ export default function Navbar() {
         {/* Auth intégré dans le menu */}
         {user ? (
           <div className="auth">
-            <span className="welcome">Bonjour, {user.name}</span>
+            <span className="welcome">{user.name}</span>
             <button onClick={logout} className="btn-outlined">
               <img  className="deconnexion-icon" src={deconnexion} alt="Déconnexion" />
             </button>

@@ -1,6 +1,7 @@
 // src/components/NavbarSwitch.jsx
 import { useAuth } from "../context/AuthContext";
 import "../assets/styles/Navbar.css";
+import Navbar from "./Navbar";
 import NavbarUser from "./NavbarUser";
 import NavbarGuest from "./NavbarGuest";
 import { useState, useEffect } from "react";
