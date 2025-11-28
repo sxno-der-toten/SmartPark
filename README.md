@@ -1,18 +1,65 @@
-# React + Vite
+# 🚗 Parking Orléans Live
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Une appli qui affiche en temps réel les places disponibles dans les parkings d’Orléans
+Pratique pour trouver une place rapidement sans tourner en rond
 
-Currently, two official plugins are available:
+## ✨ Fonctionnalités
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Nombre de places libres en temps réel
 
-## React Compiler
+Mise à jour auto sans reload
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Carte interactive des parkings
 
-Note: This will impact Vite dev & build performances.
+Infos par parking
 
-## Expanding the ESLint configuration
+Interface rapide et légère
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Technos
+
+Front en React ou Vue
+
+Back en Node ou Python
+
+Temps réel via WebSocket ou SSE
+
+Données issues de l’open data d’Orléans
+
+## 📦 Installation
+
+git clone ton_repo
+cd ton_projet
+npm install
+npm run dev
+
+
+## ⚙️ Configuration
+
+Installer npm et 
+
+## 🚀 Lancement
+
+npm run dev
+
+
+## 📁 Structure du projet
+
+/src
+  /assets
+    /pins
+    /styles
+  /components
+  /context
+  /hooks
+  /pages
+App.jsx
+main.jsx
+
+
+## 📅 À venir
+
+Notifications quand un parking se libère
+
+Filtre par distance
+
+Historique des disponibilités
