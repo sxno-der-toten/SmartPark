@@ -19,15 +19,6 @@ export default function ParkingSpotCard({
 
       {!readOnly && (
         <div className="spot-actions">
-          {/* {!hideReserveButton && (
-            <button
-              className="btn-primary"
-              disabled={spot.status !== "libre"}
-              onClick={() => onReserve?.(spot)}
-            >
-              Réserver
-            </button>
-          )} */}
           {onChangeStatus && (
             <select
               className="select"

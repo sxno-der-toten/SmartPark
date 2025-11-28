@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// Pin images (resolvable by Vite)
+// Pin images
 import pinNoir from "../assets/pins/Pin_noir.png";
 import pinRouge from "../assets/pins/Pin_rouge.png";
 import pinVert from "../assets/pins/Pin_vert.png";
@@ -23,6 +23,7 @@ export default function Home() {
       maxZoom: 19,
     }).addTo(m);
 
+// Import des données du back-end
     fetch("http://127.0.0.1:80/backend/parkings.php")
       .then((r) => r.json())
       .then((data) => {
