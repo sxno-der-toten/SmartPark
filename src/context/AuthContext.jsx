@@ -1,64 +1,100 @@
 // src/context/AuthContext.jsx
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  // Initialiser avec les données du localStorage
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("smartpark_user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
-  const signup = async (formData) => {
-    const res = await fetch("http://localhost/backend/signup.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-
-    const text = await res.text();
-    let data;
-    try {
-      data = text ? JSON.parse(text) : {};
-    } catch (e) {
-      throw new Error(
-        `Backend returned non-JSON response (status ${res.status}): ${text.substring(0, 500)}`
-      );
+  // Sauvegarder dans localStorage à chaque changement
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("smartpark_user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("smartpark_user");
     }
+  }, [user]);
 
-    if (!res.ok) throw new Error(data.message || `Erreur ${res.status}`);
+  const login = async ({ email, password }) => {
+    try {
+      const response = await fetch("http://localhost/backend/login.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    setUser(data.user);
-    return data.user;
+      const data = await response.json();
+
+      if (data.success) {
+        const userData = {
+          id: data.user.Id_Utilisateur,
+          name: `${data.user.Prénom} ${data.user.Nom}`,
+          email: data.user.Email,
+          role: data.user.Id_Rôle,
+        };
+        setUser(userData);
+        return userData;
+      } else {
+        throw new Error(data.message || "Identifiants incorrects");
+      }
+    } catch (error) {
+      console.error("Erreur de connexion:", error);
+      throw error;
+    }
   };
 
-  const login = async (credentials) => {
-    const res = await fetch("http://localhost/backend/login.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(credentials),
-    });
-
-    const text = await res.text();
-    let data;
+  const signup = async ({ nom, prenom, email, password }) => {
     try {
-      data = text ? JSON.parse(text) : {};
-    } catch (e) {
-      throw new Error(
-        `Backend returned non-JSON response (status ${res.status}): ${text.substring(0, 500)}`
-      );
+      const response = await fetch("http://localhost/backend/signup.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nom, prenom, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        const userData = {
+          id: data.user.Id_Utilisateur,
+          name: `${prenom} ${nom}`,
+          email: email,
+          role: data.user.Id_Rôle || 2,
+        };
+        setUser(userData);
+        return userData;
+      } else {
+        throw new Error(data.message || "Erreur lors de l'inscription");
+      }
+    } catch (error) {
+      console.error("Erreur d'inscription:", error);
+      throw error;
     }
-
-    if (!res.ok) throw new Error(data.message || `Erreur ${res.status}`);
-
-    setUser(data.user);
-    return data.user;
   };
 
-  const logout = () => setUser(null);
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("smartpark_user");
+  };
 
   return (
-    <AuthContext.Provider value={{ user, signup, login, logout }}>
+    <AuthContext.Provider value={{ user, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}

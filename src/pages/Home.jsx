@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+// Pin images (resolvable by Vite)
+import pinNoir from "../assets/Pins/Pin_noir.png";
+import pinRouge from "../assets/Pins/Pin_rouge.png";
+import pinVert from "../assets/Pins/Pin_vert.png";
+import pinJaune from "../assets/Pins/Pin_jaune.png";
+
 export default function Home() {
   const [parkings, setParkings] = useState([]);
   const [map, setMap] = useState(null);
@@ -28,15 +34,12 @@ export default function Home() {
 
           let iconUrl;
           if (p.nb_places_libres == null) {
-            iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png";
+            iconUrl = pinNoir;
           } else if (p.nb_places_libres == 0) {
-            iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png";
+            iconUrl = pinRouge;
           } else {
             const taux = (p.nb_places_libres / p.nb_places) * 100;
-            iconUrl =
-              taux > 20
-                ? "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"
-                : "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png";
+            iconUrl = taux > 20 ? pinVert : pinJaune;
           }
 
           const icon = L.icon({

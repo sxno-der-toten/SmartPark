@@ -1,10 +1,12 @@
 // src/pages/Auth.jsx
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Auth() {
   const [mode, setMode] = useState("login"); // "login" | "signup"
   const { login, signup } = useAuth();
+  const navigate = useNavigate();
   const [form, setForm] = useState({ nom: "", prenom: "", email: "", password: "" });
 
   const handleSubmit = async (e) => {
@@ -15,6 +17,8 @@ export default function Auth() {
       } else {
         await signup({ nom: form.nom, prenom: form.prenom, email: form.email, password: form.password });
       }
+      // Redirection vers la page d'accueil après connexion/inscription réussie
+      navigate("/");
     } catch (err) {
       console.error("Auth error:", err);
       // show a simple alert for now; the UI can be improved later
