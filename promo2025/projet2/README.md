@@ -1,18 +1,64 @@
-# React + Vite
+# 🚀 Projet Signalements Parking
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ce projet est une application web permettant de **signaler des problèmes sur des parkings** et de les visualiser sur une carte interactive.  
+Le frontend est développé en **React**, et le backend en **PHP/MySQL** hébergé via **XAMPP**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📋 Prérequis
 
-## React Compiler
+### Frontend (React)
+- Node.js (>= 18 recommandé)
+- npm ou yarn
+- React Router (pour la navigation)
+- React Leaflet (pour la carte)
+- Un navigateur moderne (Chrome, Firefox, Edge)
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Backend (PHP / MySQL)
+- XAMPP installé (Apache + MySQL)
+- PHP >= 8.0
+- Base de données MySQL avec une table `users` et une table `reports`
+- Fichiers PHP placés dans le dossier `htdocs` de XAMPP (ex: `C:\xampp\htdocs\backend`)
 
-Note: This will impact Vite dev & build performances.
+---
 
-## Expanding the ESLint configuration
+## ⚙️ Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Backend (XAMPP)
+1. Installer XAMPP et démarrer **Apache** et **MySQL**.
+2. Créer une base de données `parking_db` dans phpMyAdmin.
+3. Importer les tables nécessaires :
+   ```sql
+   CREATE TABLE users (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     name VARCHAR(100),
+     street VARCHAR(100),
+     city VARCHAR(100),
+     postalCode VARCHAR(20),
+     email VARCHAR(100) UNIQUE,
+     password VARCHAR(255)
+   );
+
+   CREATE TABLE reports (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     user_id INT,
+     title VARCHAR(255),
+     description TEXT,
+     latitude DOUBLE,
+     longitude DOUBLE,
+     FOREIGN KEY (user_id) REFERENCES users(id)
+   );
+
+### Repartition Projet
+- qui fais le Diagramme de Cas D'utilisation, 
+- qui fais le mcd
+- les qui font le Diagramme D'activité,
+- les qui font la Maquette
+- les qui font le Wiregrame
+- qui fais la structure du site
+- les qui font le backend
+- les qui font le frontEnd 
+- PHP >= 8.0
+
+
+---

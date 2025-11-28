@@ -5,42 +5,44 @@ import "./../styles/Maintenance.css";
 export default function Maintenance() {
   const { spots, toggleSensor } = useParking();
 
-  // Détermine la couleur de la carte
+  // Détermine la classe de couleur de la carte
   const getCardColor = (sensorOk) => {
-    return sensorOk ? "green" : "orange-dark"; // vert si OK, orange foncé si défaillant
+    return sensorOk ? "green" : "orange-dark"; 
+    // ⚠️ "orange-dark" doit être une classe CSS définie dans Maintenance.css
+    // Sinon remplacer par "darkorange"
   };
 
   return (
     <main className="container">
       <h2>Maintenance des capteurs</h2>
       <div className="cards-grid">
-        {spots.map((s) => {
-          const color = getCardColor(s.sensorOk);
+        {spots.map(({ id, nomParking, sensorOk, dateReparation, technicienId }) => {
+          const color = getCardColor(sensorOk);
           return (
-            <div key={s.id} className={`card-maintenance ${color}`}>
+            <div key={id} className={`card-maintenance ${color}`}>
               {/* Affiche le nom du parking si présent, sinon l'id */}
-              <h4>{s.nomParking ?? s.id}</h4>
+              <h4>{nomParking || `Parking #${id}`}</h4>
 
-              <p><strong>Capteur :</strong> {s.sensorOk ? "OK" : "Défaillant"}</p>
+              <p><strong>Capteur :</strong> {sensorOk ? "✅ OK" : "⚠️ Défaillant"}</p>
 
               {/* Date réparation si capteur défaillant */}
-              {!s.sensorOk && s.dateReparation && (
-                <p><strong>Date réparation :</strong> {s.dateReparation}</p>
+              {!sensorOk && dateReparation && (
+                <p><strong>Date réparation :</strong> {dateReparation}</p>
               )}
 
-              <p><strong>Technicien ID :</strong> {s.technicienId ?? "N/A"}</p>
+              <p><strong>Technicien :</strong> {technicienId ? `#${technicienId}` : "N/A"}</p>
 
               <small className="mini-desc">
-                {s.sensorOk
+                {sensorOk
                   ? "Capteur opérationnel, aucune intervention nécessaire."
                   : "Capteur en panne, intervention prévue."}
               </small>
 
               <button
                 className="btn-outlined"
-                onClick={() => toggleSensor(s.id)}
+                onClick={() => toggleSensor(id)}
               >
-                Basculer l'état du capteur
+                🔄 Basculer l'état du capteur
               </button>
             </div>
           );

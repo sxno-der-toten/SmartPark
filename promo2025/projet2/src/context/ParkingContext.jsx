@@ -24,6 +24,9 @@ const initialSpots = [
 
 
 
+
+
+
 export function ParkingProvider({ children }) {
   const [spots, setSpots] = useState(initialSpots);
 
@@ -51,5 +54,10 @@ export function ParkingProvider({ children }) {
     </ParkingContext.Provider>
   );
 }
+
+
+
+
+
 
 export const useParking = () => useContext(ParkingContext);
